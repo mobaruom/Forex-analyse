@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ForexVision AI — Analyse de Marché</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0812;
+    --surface: #110f1a;
+    --surface2: #1a1628;
+    --border: #2a2040;
+    --violet: #7c3aed;
+    --violet-light: #a855f7;
+    --violet-glow: #c084fc;
+    --accent: #06ffa5;
+    --accent2: #ff6b6b;
+    --accent3: #fbbf24;
+    --text: #f0eaff;
+    --text-muted: #7c6fa0;
+    --text-dim: #4a4060;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘Syne’, sans-serif;
+min-height: 100vh;
+overflow-x: hidden;
+position: relative;
+}
+
+body::before {
+content: ‘’;
+position: fixed;
+top: -200px; left: 50%;
+transform: translateX(-50%);
+width: 800px; height: 500px;
+background: radial-gradient(ellipse, rgba(124,58,237,0.15) 0%, transparent 70%);
+pointer-events: none;
+z-index: 0;
+}
+
+body::after {
+content: ‘’;
+position: fixed;
+bottom: -100px; right: -100px;
+width: 400px; height: 400px;
+background: radial-gradient(ellipse, rgba(6,255,165,0.05) 0%, transparent 70%);
+pointer-events: none;
+z-index: 0;
+}
+
+.grain {
+position: fixed; inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none; z-index: 1; opacity: 0.4;
+}
+
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 32px 24px;
+position: relative; z-index: 2;
+}
+
+/* HEADER */
+header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 40px;
+animation: fadeDown 0.6s ease both;
+}
+
+.logo {
+display: flex; align-items: center; gap: 12px;
+}
+
+.logo-icon {
+width: 40px; height: 40px;
+background: linear-gradient(135deg, var(–violet), var(–violet-glow));
+border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+font-size: 18px;
+box-shadow: 0 0 20px rgba(124,58,237,0.4);
+}
+
+.logo-text {
+font-size: 20px; font-weight: 800;
+letter-spacing: -0.5px;
+}
+
+.logo-text span { color: var(–violet-glow); }
+
+.badge {
+background: rgba(124,58,237,0.15);
+border: 1px solid rgba(124,58,237,0.3);
+color: var(–violet-glow);
+padding: 6px 14px;
+border-radius: 100px;
+font-size: 12px;
+font-family: ‘DM Mono’, monospace;
+letter-spacing: 1px;
+}
+
+/* BENTO GRID */
+.bento {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+grid-template-rows: auto auto auto;
+gap: 16px;
+}
+
+.card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 20px;
+padding: 24px;
+position: relative;
+overflow: hidden;
+transition: border-color 0.3s, transform 0.3s;
+animation: fadeUp 0.6s ease both;
+}
+
+.card:hover { border-color: rgba(124,58,237,0.4); transform: translateY(-2px); }
+
+.card::before {
+content: ‘’;
+position: absolute; inset: 0;
+background: linear-gradient(135deg, rgba(124,58,237,0.03), transparent);
+pointer-events: none;
+}
+
+/* CARD SPANS */
+.card-upload { grid-column: 1 / 3; grid-row: 1; }
+.card-pair { grid-column: 3; grid-row: 1; }
+.card-result { grid-column: 1 / 4; grid-row: 2; }
+.card-stats { grid-column: 1; grid-row: 3; }
+.card-advice { grid-column: 2 / 4; grid-row: 3; }
+
+.card-label {
+font-size: 11px;
+font-family: ‘DM Mono’, monospace;
+color: var(–text-muted);
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 16px;
+display: flex; align-items: center; gap: 8px;
+}
+
+.card-label::before {
+content: ‘’;
+width: 6px; height: 6px;
+background: var(–violet-light);
+border-radius: 50%;
+box-shadow: 0 0 8px var(–violet-light);
+}
+
+/* UPLOAD ZONE */
+.upload-zone {
+border: 2px dashed var(–border);
+border-radius: 14px;
+padding: 40px;
+text-align: center;
+cursor: pointer;
+transition: all 0.3s;
+position: relative;
+}
+
+.upload-zone:hover, .upload-zone.dragover {
+border-color: var(–violet);
+background: rgba(124,58,237,0.05);
+}
+
+.upload-zone input {
+position: absolute; inset: 0;
+opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+
+.upload-icon {
+font-size: 36px; margin-bottom: 12px;
+}
+
+.upload-text {
+font-size: 15px; font-weight: 600;
+margin-bottom: 6px;
+}
+
+.upload-sub {
+font-size: 12px;
+font-family: ‘DM Mono’, monospace;
+color: var(–text-muted);
+}
+
+#preview-wrap {
+display: none;
+position: relative;
+border-radius: 12px;
+overflow: hidden;
+max-height: 220px;
+}
+
+#preview-wrap img {
+width: 100%; height: 220px;
+object-fit: cover;
+display: block;
+}
+
+.preview-overlay {
+position: absolute; inset: 0;
+background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+display: flex; align-items: flex-end;
+padding: 12px;
+}
+
+.preview-name {
+font-size: 12px;
+font-family: ‘DM Mono’, monospace;
+color: rgba(255,255,255,0.7);
+}
+
+/* PAIR SELECTOR */
+.pair-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+margin-bottom: 16px;
+}
+
+.pair-btn {
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 10px 8px;
+color: var(–text-muted);
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+cursor: pointer;
+transition: all 0.2s;
+text-align: center;
+font-weight: 500;
+}
+
+.pair-btn:hover { border-color: var(–violet-light); color: var(–violet-light); }
+.pair-btn.active {
+background: rgba(124,58,237,0.2);
+border-color: var(–violet);
+color: var(–violet-glow);
+box-shadow: 0 0 12px rgba(124,58,237,0.2);
+}
+
+.timeframe-select {
+width: 100%;
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 10px 14px;
+color: var(–text);
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+cursor: pointer;
+outline: none;
+margin-bottom: 16px;
+}
+
+.analyze-btn {
+width: 100%;
+background: linear-gradient(135deg, var(–violet), var(–violet-light));
+border: none;
+border-radius: 12px;
+padding: 14px;
+color: white;
+font-family: ‘Syne’, sans-serif;
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.3s;
+letter-spacing: 0.5px;
+box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+}
+
+.analyze-btn:hover:not(:disabled) {
+transform: translateY(-2px);
+box-shadow: 0 8px 30px rgba(124,58,237,0.4);
+}
+
+.analyze-btn:disabled {
+opacity: 0.5; cursor: not-allowed;
+}
+
+/* RESULT CARD */
+.result-empty {
+text-align: center;
+padding: 40px;
+color: var(–text-dim);
+}
+
+.result-empty .big-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.3; }
+.result-empty p { font-family: ‘DM Mono’, monospace; font-size: 13px; }
+
+.result-content { display: none; }
+
+.result-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 20px;
+flex-wrap: wrap;
+gap: 12px;
+}
+
+.signal-badge {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+padding: 8px 18px;
+border-radius: 100px;
+font-size: 14px;
+font-weight: 700;
+letter-spacing: 1px;
+}
+
+.signal-buy { background: rgba(6,255,165,0.15); border: 1px solid rgba(6,255,165,0.4); color: var(–accent); }
+.signal-sell { background: rgba(255,107,107,0.15); border: 1px solid rgba(255,107,107,0.4); color: var(–accent2); }
+.signal-wait { background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.4); color: var(–accent3); }
+
+.confidence-bar {
+display: flex; align-items: center; gap: 12px;
+font-family: ‘DM Mono’, monospace; font-size: 12px;
+color: var(–text-muted);
+}
+
+.bar-track {
+width: 120px; height: 6px;
+background: var(–border);
+border-radius: 100px;
+overflow: hidden;
+}
+
+.bar-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–violet), var(–violet-glow));
+border-radius: 100px;
+transition: width 1s ease;
+}
+
+.levels-row {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+margin-bottom: 20px;
+}
+
+.level-box {
+background: var(–surface2);
+border-radius: 12px;
+padding: 14px;
+border: 1px solid var(–border);
+}
+
+.level-label {
+font-size: 10px;
+font-family: ‘DM Mono’, monospace;
+color: var(–text-muted);
+text-transform: uppercase;
+letter-spacing: 2px;
+margin-bottom: 6px;
+}
+
+.level-value {
+font-size: 20px;
+font-weight: 700;
+font-family: ‘DM Mono’, monospace;
+}
+
+.level-entry .level-value { color: var(–text); }
+.level-tp .level-value { color: var(–accent); }
+.level-sl .level-value { color: var(–accent2); }
+
+.level-sub {
+font-size: 10px;
+font-family: ‘DM Mono’, monospace;
+color: var(–text-dim);
+margin-top: 4px;
+}
+
+.analysis-text {
+font-size: 14px;
+line-height: 1.7;
+color: #c4b8e0;
+border-left: 2px solid var(–violet);
+padding-left: 16px;
+margin-bottom: 0;
+}
+
+/* STATS CARD */
+.stat-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 12px 0;
+border-bottom: 1px solid var(–border);
+}
+
+.stat-item:last-child { border-bottom: none; }
+
+.stat-name {
+font-size: 12px;
+font-family: ‘DM Mono’, monospace;
+color: var(–text-muted);
+}
+
+.stat-val {
+font-size: 13px;
+font-weight: 600;
+font-family: ‘DM Mono’, monospace;
+}
+
+/* ADVICE CARD */
+.advice-list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.advice-item {
+display: flex;
+gap: 12px;
+align-items: flex-start;
+background: var(–surface2);
+border-radius: 10px;
+padding: 12px 14px;
+border: 1px solid var(–border);
+}
+
+.advice-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.advice-text {
+font-size: 13px;
+line-height: 1.5;
+color: #c4b8e0;
+}
+
+/* LOADING */
+.loading-overlay {
+display: none;
+position: absolute; inset: 0;
+background: rgba(10,8,18,0.85);
+border-radius: 20px;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+gap: 16px;
+z-index: 10;
+backdrop-filter: blur(4px);
+}
+
+.loading-overlay.show { display: flex; }
+
+.spinner {
+width: 40px; height: 40px;
+border: 3px solid var(–border);
+border-top-color: var(–violet-light);
+border-radius: 50%;
+animation: spin 0.8s linear infinite;
+}
+
+.loading-text {
+font-family: ‘DM Mono’, monospace;
+font-size: 13px;
+color: var(–text-muted);
+animation: pulse 1.5s ease infinite;
+}
+
+/* EMPTY STATE PLACEHOLDERS */
+.placeholder-stat {
+height: 14px;
+background: var(–border);
+border-radius: 4px;
+animation: shimmer 1.5s ease infinite;
+width: 60px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeDown {
+from { opacity: 0; transform: translateY(-20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes pulse {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+0%, 100% { opacity: 0.3; }
+50% { opacity: 0.6; }
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+.card:nth-child(5) { animation-delay: 0.5s; }
+
+/* FOOTER */
+footer {
+text-align: center;
+margin-top: 32px;
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+color: var(–text-dim);
+position: relative; z-index: 2;
+animation: fadeUp 0.6s 0.6s ease both;
+}
+
+footer span { color: var(–violet-light); }
+
+@media (max-width: 768px) {
+.bento { grid-template-columns: 1fr; }
+.card-upload, .card-pair, .card-result, .card-stats, .card-advice {
+grid-column: 1; grid-row: auto;
+}
+.levels-row { grid-template-columns: 1fr; }
+}
+</style>
+
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="container">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">📈</div>
+      <div class="logo-text">Forex<span>Vision</span></div>
+    </div>
+    <div class="badge">AI POWERED</div>
+  </header>
+
+  <div class="bento">
+
+```
+<!-- UPLOAD -->
+<div class="card card-upload">
+  <div class="card-label">Graphique</div>
+  <div class="upload-zone" id="upload-zone">
+    <input type="file" id="file-input" accept="image/*">
+    <div id="upload-prompt">
+      <div class="upload-icon">🖼️</div>
+      <div class="upload-text">Déposer votre screenshot ici</div>
+      <div class="upload-sub">PNG, JPG, WEBP — TradingView, MT4, MT5</div>
+    </div>
+    <div id="preview-wrap">
+      <img id="preview-img" src="" alt="preview">
+      <div class="preview-overlay">
+        <span class="preview-name" id="preview-name"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAIR & SETTINGS -->
+<div class="card card-pair">
+  <div class="card-label">Paramètres</div>
+  <div style="font-size:11px; font-family:'DM Mono',monospace; color:var(--text-muted); margin-bottom:8px;">PAIRE</div>
+  <div class="pair-grid">
+    <button class="pair-btn active" data-pair="EUR/USD">EUR/USD</button>
+    <button class="pair-btn" data-pair="GBP/USD">GBP/USD</button>
+    <button class="pair-btn" data-pair="XAU/USD">XAU/USD</button>
+    <button class="pair-btn" data-pair="USD/JPY">USD/JPY</button>
+  </div>
+  <div style="font-size:11px; font-family:'DM Mono',monospace; color:var(--text-muted); margin-bottom:8px;">TIMEFRAME</div>
+  <select class="timeframe-select" id="tf-select">
+    <option value="M1">M1 — 1 Minute</option>
+    <option value="M5">M5 — 5 Minutes</option>
+    <option value="M15">M15 — 15 Minutes</option>
+    <option value="M30">M30 — 30 Minutes</option>
+    <option value="H1" selected>H1 — 1 Heure</option>
+    <option value="H4">H4 — 4 Heures</option>
+    <option value="D1">D1 — Daily</option>
+    <option value="W1">W1 — Weekly</option>
+  </select>
+  <div style="font-size:11px; font-family:'DM Mono',monospace; color:var(--text-muted); margin-bottom:8px;">CLÉ API GEMINI</div>
+  <input type="password" id="api-key-input" placeholder="gsk_..." style="width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text); font-family:'DM Mono',monospace; font-size:12px; outline:none; margin-bottom:12px;" oninput="checkReady()">
+  <button class="analyze-btn" id="analyze-btn" disabled>⚡ Analyser</button>
+</div>
+
+<!-- RESULT -->
+<div class="card card-result" style="position:relative;">
+  <div class="card-label">Analyse IA</div>
+  <div class="result-empty" id="result-empty">
+    <div class="big-icon">🔍</div>
+    <p>Uploadez un graphique et lancez l'analyse</p>
+  </div>
+  <div class="result-content" id="result-content">
+    <div class="result-header">
+      <div class="signal-badge signal-buy" id="signal-badge">⬆ BUY</div>
+      <div class="confidence-bar">
+        <span>Confiance</span>
+        <div class="bar-track"><div class="bar-fill" id="conf-fill" style="width:0%"></div></div>
+        <span id="conf-pct">—</span>
+      </div>
+    </div>
+    <div class="levels-row">
+      <div class="level-box level-entry">
+        <div class="level-label">Entrée</div>
+        <div class="level-value" id="entry-val">—</div>
+        <div class="level-sub" id="entry-sub">Prix actuel</div>
+      </div>
+      <div class="level-box level-tp">
+        <div class="level-label">Take Profit</div>
+        <div class="level-value" id="tp-val">—</div>
+        <div class="level-sub" id="tp-sub">Objectif</div>
+      </div>
+      <div class="level-box level-sl">
+        <div class="level-label">Stop Loss</div>
+        <div class="level-value" id="sl-val">—</div>
+        <div class="level-sub" id="sl-sub">Risque</div>
+      </div>
+    </div>
+    <p class="analysis-text" id="analysis-text"></p>
+  </div>
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Analyse en cours...</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="card card-stats">
+  <div class="card-label">Statistiques</div>
+  <div id="stats-content">
+    <div class="stat-item">
+      <span class="stat-name">Ratio R/R</span>
+      <span class="stat-val" id="rr-val" style="color:var(--violet-glow)">—</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-name">Tendance</span>
+      <span class="stat-val" id="trend-val">—</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-name">Momentum</span>
+      <span class="stat-val" id="momentum-val">—</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-name">Setup</span>
+      <span class="stat-val" id="setup-val">—</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-name">Paire</span>
+      <span class="stat-val" id="pair-display" style="color:var(--text-muted)">EUR/USD</span>
+    </div>
+  </div>
+</div>
+
+<!-- ADVICE -->
+<div class="card card-advice">
+  <div class="card-label">Conseils & Risques</div>
+  <div class="advice-list" id="advice-list">
+    <div class="advice-item">
+      <span class="advice-icon">💡</span>
+      <span class="advice-text">Lancez une analyse pour obtenir des conseils personnalisés basés sur votre graphique.</span>
+    </div>
+    <div class="advice-item">
+      <span class="advice-icon">⚠️</span>
+      <span class="advice-text">Le trading Forex comporte des risques. Ne tradez jamais plus que ce que vous pouvez vous permettre de perdre.</span>
+    </div>
+    <div class="advice-item">
+      <span class="advice-icon">📊</span>
+      <span class="advice-text">Utilisez toujours un stop loss et respectez votre gestion du risque (max 1-2% par trade).</span>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <footer>Propulsé par <span>Claude Vision AI</span> — ForexVision &copy; 2025 — Pour usage éducatif uniquement</footer>
+</div>
+
+<script>
+  // ⚙️ API Anthropic — fonctionne nativement dans claude.ai
+  // API Gemini - gratuit sur aistudio.google.com
+
+  let selectedPair = "EUR/USD";
+  let imageBase64 = null;
+
+  function checkReady() {
+    const key = document.getElementById('api-key-input')?.value?.trim();
+    analyzeBtn.disabled = !(imageBase64 && key);
+  }
+
+  // Pair buttons
+  document.querySelectorAll('.pair-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.pair-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedPair = btn.dataset.pair;
+      document.getElementById('pair-display').textContent = selectedPair;
+    });
+  });
+
+  // File upload
+  const fileInput = document.getElementById('file-input');
+  const uploadZone = document.getElementById('upload-zone');
+  const uploadPrompt = document.getElementById('upload-prompt');
+  const previewWrap = document.getElementById('preview-wrap');
+  const previewImg = document.getElementById('preview-img');
+  const previewName = document.getElementById('preview-name');
+  const analyzeBtn = document.getElementById('analyze-btn');
+
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+
+  fileInput.addEventListener('change', e => {
+    if (e.target.files[0]) handleFile(e.target.files[0]);
+  });
+
+  function handleFile(file) {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target.result;
+      imageBase64 = result.split(',')[1];
+      previewImg.src = result;
+      previewName.textContent = file.name;
+      uploadPrompt.style.display = 'none';
+      previewWrap.style.display = 'block';
+      checkReady();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Analyze
+  analyzeBtn.addEventListener('click', async () => {
+    if (!imageBase64) return;
+    const tf = document.getElementById('tf-select').value;
+    await analyzeChart(imageBase64, selectedPair, tf);
+  });
+
+  async function analyzeChart(base64, pair, timeframe) {
+    const loading = document.getElementById('loading');
+    loading.classList.add('show');
+    analyzeBtn.disabled = true;
+
+    const prompt = `Tu es un trader professionnel expert en analyse technique Forex. Analyse ce graphique de trading pour la paire ${pair} en timeframe ${timeframe}.
+
+Réponds UNIQUEMENT avec ce JSON strict (pas de markdown, pas de texte avant ou après):
+{
+  "signal": "BUY" ou "SELL" ou "WAIT",
+  "confidence": 75,
+  "entry": "1.0850",
+  "tp": "1.0920",
+  "sl": "1.0810",
+  "rr_ratio": "1:1.75",
+  "trend": "Haussier",
+  "momentum": "Fort",
+  "setup": "Breakout",
+  "analysis": "Analyse détaillée en 2-3 phrases expliquant le setup, les niveaux clés, et la raison du signal.",
+  "advices": [
+    {"icon": "✅", "text": "Conseil 1 précis et actionnable"},
+    {"icon": "⚠️", "text": "Risque principal à surveiller"},
+    {"icon": "📈", "text": "Confluence ou confirmation à attendre"},
+    {"icon": "💡", "text": "Conseil de gestion du risque"}
+  ]
+}
+
+Sois précis sur les niveaux de prix. Si tu ne peux pas lire les prix exacts, donne des niveaux relatifs cohérents. Signal WAIT si le setup n'est pas clair.`;
+
+    const apiKey = document.getElementById('api-key-input').value.trim();
+    if (!apiKey) {
+      loading.classList.remove('show');
+      analyzeBtn.disabled = false;
+      displayError("Entre ta clé API Gemini pour analyser");
+      return;
+    }
+    const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+    try {
+      const response = await fetch(GROQ_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "meta-llama/llama-4-scout-17b-16e-instruct",
+          max_tokens: 1024,
+          temperature: 0.1,
+          messages: [{
+            role: "user",
+            content: [
+              { type: "image_url", image_url: { url: `data:image/jpeg;base64,${base64}` } },
+              { type: "text", text: prompt }
+            ]
+          }]
+        })
+      });
+
+      const data = await response.json();
+      if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+
+      let text = data.choices[0].message.content.trim();
+      text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("Réponse inattendue de l'IA");
+
+      const result = JSON.parse(jsonMatch[0]);
+      displayResult(result);
+
+    } catch (err) {
+      console.error(err);
+      displayError(err.message);
+    } finally {
+      loading.classList.remove('show');
+      analyzeBtn.disabled = false;
+    }
+  }
+
+  function displayResult(r) {
+    document.getElementById('result-empty').style.display = 'none';
+    const rc = document.getElementById('result-content');
+    rc.style.display = 'block';
+
+    // Signal
+    const badge = document.getElementById('signal-badge');
+    badge.className = 'signal-badge';
+    if (r.signal === 'BUY') { badge.classList.add('signal-buy'); badge.textContent = '⬆ BUY'; }
+    else if (r.signal === 'SELL') { badge.classList.add('signal-sell'); badge.textContent = '⬇ SELL'; }
+    else { badge.classList.add('signal-wait'); badge.textContent = '⏸ WAIT'; }
+
+    // Confidence
+    const conf = r.confidence || 0;
+    document.getElementById('conf-fill').style.width = conf + '%';
+    document.getElementById('conf-pct').textContent = conf + '%';
+
+    // Levels
+    document.getElementById('entry-val').textContent = r.entry || '—';
+    document.getElementById('tp-val').textContent = r.tp || '—';
+    document.getElementById('sl-val').textContent = r.sl || '—';
+
+    // Analysis
+    document.getElementById('analysis-text').textContent = r.analysis || '';
+
+    // Stats
+    document.getElementById('rr-val').textContent = r.rr_ratio || '—';
+    document.getElementById('trend-val').textContent = r.trend || '—';
+    document.getElementById('momentum-val').textContent = r.momentum || '—';
+    document.getElementById('setup-val').textContent = r.setup || '—';
+
+    // Advices
+    if (r.advices && r.advices.length) {
+      const list = document.getElementById('advice-list');
+      list.innerHTML = r.advices.map(a => `
+        <div class="advice-item">
+          <span class="advice-icon">${a.icon}</span>
+          <span class="advice-text">${a.text}</span>
+        </div>
+      `).join('');
+    }
+  }
+
+  function displayError(msg) {
+    document.getElementById('result-empty').style.display = 'block';
+    document.getElementById('result-empty').innerHTML = `
+      <div class="big-icon">❌</div>
+      <p>Erreur: ${msg}</p>
+    `;
+    document.getElementById('result-content').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
