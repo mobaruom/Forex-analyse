@@ -16,7 +16,7 @@ html, body { background: #050508 !important; color-scheme: dark !important; marg
   --green: #00ff88; --red: #ff3355; --yellow: #ffcc00; --blue: #4488ff;
   --text: #e8e8f0; --text2: #7070a0; --text3: #3a3a5a;
   --mono: 'Space Mono', monospace;
-  --display: 'Bebas Neue', sans-serif;
+  --display: 'Bebas Neue', 'Arial Narrow', sans-serif;
   --body: 'DM Sans', sans-serif;
 }
 * { box-sizing: border-box; }
@@ -41,13 +41,14 @@ body::before {
 header {
 display: flex; align-items: center; justify-content: space-between;
 margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(–border);
-animation: fadeIn 0.5s ease both;
+animation: fadeIn 0.5s ease both; flex-wrap: nowrap; gap: 12px;
 }
-.logo { display: flex; align-items: baseline; gap: 10px; }
-.logo-main { font-family: var(–display); font-size: 30px; letter-spacing: 2px; color: var(–text); line-height: 1; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-main { font-family: var(–display); font-size: clamp(20px, 5vw, 28px); letter-spacing: 2px; color: var(–text); line-height: 1; font-synthesis: none; }
+.analyze-btn { font-synthesis: none; }
 .logo-main span { color: var(–green); }
-.logo-sub { font-family: var(–mono); font-size: 10px; color: var(–text2); letter-spacing: 3px; }
-.status { display: flex; align-items: center; gap: 6px; font-family: var(–mono); font-size: 10px; color: var(–green); }
+.logo-sub { font-family: var(–mono); font-size: 9px; color: var(–text2); letter-spacing: 2px; line-height: 1.4; }
+.status { display: flex; align-items: center; gap: 6px; font-family: var(–mono); font-size: 10px; color: var(–green); white-space: nowrap; }
 .dot { width: 6px; height: 6px; background: var(–green); border-radius: 50%; box-shadow: 0 0 8px var(–green); animation: blink 2s ease infinite; }
 
 /* API BAR */
@@ -64,7 +65,7 @@ margin-bottom: 20px; animation: fadeIn 0.5s 0.1s ease both;
 .api-ok.show { opacity: 1; }
 
 /* GRID */
-.grid { display: grid; grid-template-columns: 380px 1fr; gap: 16px; }
+.grid { display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 16px; }
 
 /* CARD */
 .card {
@@ -210,9 +211,9 @@ flex-direction: column; gap: 14px; z-index: 50; backdrop-filter: blur(4px);
   <header>
     <div class="logo">
       <div class="logo-main">FOREX<span>VISION</span></div>
-      <div class="logo-sub">AI TERMINAL</div>
+      <div class="logo-sub">AI&nbsp;TERMINAL</div>
     </div>
-    <div class="status"><div class="dot"></div>LIVE AI</div>
+    <div class="status"><div class="dot"></div>&nbsp;LIVE</div>
   </header>
 
   <div class="api-bar">
@@ -264,7 +265,7 @@ flex-direction: column; gap: 14px; z-index: 50; backdrop-filter: blur(4px);
   <div class="card" style="position:relative;">
     <div class="sec-title">ANALYSE IA</div>
     <div class="result-empty" id="result-empty">
-      <div class="big">[ — ]</div>
+      <div class="big">&#9670;</div>
       <p>EN ATTENTE D'UN GRAPHIQUE</p>
     </div>
     <div class="result-data" id="result-data">
@@ -273,23 +274,23 @@ flex-direction: column; gap: 14px; z-index: 50; backdrop-filter: blur(4px);
         <div class="signal buy" id="signal-txt">BUY</div>
         <div class="conf-block">
           <div class="conf-label">CONFIANCE</div>
-          <div class="conf-val" id="conf-val">—%</div>
+          <div class="conf-val" id="conf-val">-%</div>
         </div>
       </div>
       <div class="levels">
         <div class="lvl">
           <div class="lvl-label">ENTRÉE</div>
-          <div class="lvl-val entry" id="entry-val">—</div>
+          <div class="lvl-val entry" id="entry-val">-</div>
           <div class="lvl-sub" id="entry-sub">Zone d'entrée</div>
         </div>
         <div class="lvl">
           <div class="lvl-label">TAKE PROFIT</div>
-          <div class="lvl-val tp" id="tp-val">—</div>
+          <div class="lvl-val tp" id="tp-val">-</div>
           <div class="lvl-sub" id="tp-sub">Objectif</div>
         </div>
         <div class="lvl">
           <div class="lvl-label">STOP LOSS</div>
-          <div class="lvl-val sl" id="sl-val">—</div>
+          <div class="lvl-val sl" id="sl-val">-</div>
           <div class="lvl-sub" id="sl-sub">Invalidation</div>
         </div>
       </div>
@@ -306,12 +307,12 @@ flex-direction: column; gap: 14px; z-index: 50; backdrop-filter: blur(4px);
     <div class="bottom-grid">
       <div>
         <div class="sec-title">STATISTIQUES</div>
-        <div class="stat-row"><span class="stat-name">PAIRE</span><span class="stat-val" id="s-pair" style="color:var(--blue)">—</span></div>
-        <div class="stat-row"><span class="stat-name">RATIO R/R</span><span class="stat-val" id="s-rr" style="color:var(--green)">—</span></div>
-        <div class="stat-row"><span class="stat-name">TENDANCE</span><span class="stat-val" id="s-trend">—</span></div>
-        <div class="stat-row"><span class="stat-name">MOMENTUM</span><span class="stat-val" id="s-momentum">—</span></div>
-        <div class="stat-row"><span class="stat-name">SETUP</span><span class="stat-val" id="s-setup">—</span></div>
-        <div class="stat-row"><span class="stat-name">STRUCTURE</span><span class="stat-val" id="s-structure">—</span></div>
+        <div class="stat-row"><span class="stat-name">PAIRE</span><span class="stat-val" id="s-pair" style="color:var(--blue)">-</span></div>
+        <div class="stat-row"><span class="stat-name">RATIO R/R</span><span class="stat-val" id="s-rr" style="color:var(--green)">-</span></div>
+        <div class="stat-row"><span class="stat-name">TENDANCE</span><span class="stat-val" id="s-trend">-</span></div>
+        <div class="stat-row"><span class="stat-name">MOMENTUM</span><span class="stat-val" id="s-momentum">-</span></div>
+        <div class="stat-row"><span class="stat-name">SETUP</span><span class="stat-val" id="s-setup">-</span></div>
+        <div class="stat-row"><span class="stat-name">STRUCTURE</span><span class="stat-val" id="s-structure">-</span></div>
       </div>
       <div>
         <div class="sec-title">CONSEILS</div>
@@ -447,7 +448,7 @@ Réponds UNIQUEMENT avec ce JSON valide, sans aucun texte avant ou après :
     if (r.tp_note) document.getElementById('tp-sub').textContent = r.tp_note;
     if (r.sl_note) document.getElementById('sl-sub').textContent = r.sl_note;
     document.getElementById('analysis-txt').textContent = r.analysis || '';
-    document.getElementById('s-pair').textContent = r.pair || '—';
+    document.getElementById('s-pair').textContent = r.pair || '-';
     document.getElementById('s-rr').textContent = r.rr_ratio || '—';
     document.getElementById('s-trend').textContent = r.trend || '—';
     document.getElementById('s-momentum').textContent = r.momentum || '—';
