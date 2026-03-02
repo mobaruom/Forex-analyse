@@ -4,468 +4,964 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#050508">
+<meta name="theme-color" content="#0d0d0d">
 <title>ForexVision AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
-html, body { background: #050508 !important; color-scheme: dark !important; margin: 0; padding: 0; min-height: 100vh; }
-:root {
-  --bg: #050508; --bg2: #0c0c12; --bg3: #12121a;
-  --border: #1e1e2e; --border2: #2a2a3e;
-  --green: #00ff88; --red: #ff3355; --yellow: #ffcc00; --blue: #4488ff;
-  --text: #e8e8f0; --text2: #7070a0; --text3: #3a3a5a;
-  --mono: 'Space Mono', monospace;
-  --display: 'Bebas Neue', 'Arial Narrow', sans-serif;
-  --body: 'DM Sans', sans-serif;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-* { box-sizing: border-box; }
+
+html {
+  background: #0d0d0d;
+}
+
 body {
-  background: var(--bg) !important; color: var(--text);
-  font-family: var(--body); overflow-x: hidden; position: relative;
+  background: #0d0d0d;
+  color: #f0f0f0;
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
 }
-body::after {
-  content: ''; position: fixed; inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px);
-  pointer-events: none; z-index: 100;
-}
-body::before {
-  content: ''; position: fixed; top: -300px; left: 50%; transform: translateX(-50%);
-  width: 600px; height: 600px;
-  background: radial-gradient(ellipse, rgba(0,255,136,0.04) 0%, transparent 65%);
-  pointer-events: none; z-index: 0;
-}
-.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px; position: relative; z-index: 1; }
 
-/* HEADER */
-header {
-display: flex; align-items: center; justify-content: space-between;
-margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(–border);
-animation: fadeIn 0.5s ease both; flex-wrap: nowrap; gap: 12px;
+/* ===== PAGE ===== */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
 }
-.logo { display: flex; align-items: center; gap: 10px; }
-.logo-main { font-family: var(–display); font-size: clamp(20px, 5vw, 28px); letter-spacing: 2px; color: var(–text); line-height: 1; font-synthesis: none; }
-.analyze-btn { font-synthesis: none; }
-.logo-main span { color: var(–green); }
-.logo-sub { font-family: var(–mono); font-size: 9px; color: var(–text2); letter-spacing: 2px; line-height: 1.4; }
-.status { display: flex; align-items: center; gap: 6px; font-family: var(–mono); font-size: 10px; color: var(–green); white-space: nowrap; }
-.dot { width: 6px; height: 6px; background: var(–green); border-radius: 50%; box-shadow: 0 0 8px var(–green); animation: blink 2s ease infinite; }
 
-/* API BAR */
-.api-bar {
-background: var(–bg2); border: 1px solid var(–border); border-radius: 8px;
-padding: 11px 16px; display: flex; align-items: center; gap: 12px;
-margin-bottom: 20px; animation: fadeIn 0.5s 0.1s ease both;
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
 }
-.api-label { font-family: var(–mono); font-size: 10px; color: var(–text2); letter-spacing: 2px; white-space: nowrap; }
-.api-sep { width: 1px; height: 16px; background: var(–border2); }
-.api-input { flex: 1; background: transparent; border: none; outline: none; color: var(–green); font-family: var(–mono); font-size: 12px; }
-.api-input::placeholder { color: var(–text3); }
-.api-ok { font-family: var(–mono); font-size: 10px; color: var(–green); opacity: 0; transition: opacity 0.3s; white-space: nowrap; }
-.api-ok.show { opacity: 1; }
 
-/* GRID */
-.grid { display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 16px; }
+.header-logo {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+}
 
-/* CARD */
+.header-logo span {
+  color: #7c5cfc;
+}
+
+.header-badge {
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #7c5cfc;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  background: #7c5cfc;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(124, 92, 252, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(124, 92, 252, 0); }
+}
+
+/* ===== SECRET CODE BAR ===== */
+.secret-bar {
+  background: #111118;
+  border: 1px solid #222230;
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.secret-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #555570;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.secret-divider {
+  width: 1px;
+  height: 18px;
+  background: #222230;
+  flex-shrink: 0;
+}
+
+.secret-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #a090ff;
+  min-width: 0;
+}
+
+.secret-input::placeholder {
+  color: #333345;
+}
+
+.secret-saved {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #5fce8f;
+  opacity: 0;
+  transition: opacity 0.4s;
+  white-space: nowrap;
+}
+
+.secret-saved.visible {
+  opacity: 1;
+}
+
+/* ===== GRID ===== */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ===== CARD ===== */
 .card {
-background: var(–bg2); border: 1px solid var(–border); border-radius: 8px;
-padding: 20px; position: relative; overflow: hidden;
-animation: fadeIn 0.5s ease both;
+  background: #111118;
+  border: 1px solid #1e1e2e;
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
 }
-.card::before {
-content: ‘’; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-background: linear-gradient(90deg, transparent, rgba(0,255,136,0.12), transparent);
+
+.card-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #444460;
+  margin-bottom: 18px;
 }
-.card:nth-child(1) { animation-delay: 0.1s; }
-.card:nth-child(2) { animation-delay: 0.2s; }
 
-.sec-title {
-font-family: var(–mono); font-size: 10px; color: var(–text2);
-letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px;
-display: flex; align-items: center; gap: 8px;
+/* ===== UPLOAD CARD ===== */
+.upload-card {
+  grid-column: 1;
+  grid-row: 1 / 3;
 }
-.sec-title::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
 
-/* DROP ZONE */
-.drop-zone {
-border: 1px dashed var(–border2); border-radius: 6px; min-height: 190px;
-display: flex; flex-direction: column; align-items: center; justify-content: center;
-cursor: pointer; transition: all 0.2s; position: relative; gap: 10px;
+.drop-area {
+  border: 1.5px dashed #252535;
+  border-radius: 14px;
+  padding: 36px 20px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s, background 0.2s;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.drop-zone:hover, .drop-zone.over { border-color: var(–green); background: rgba(0,255,136,0.02); }
-.drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-.drop-icon { font-size: 28px; opacity: 0.35; }
-.drop-text { font-family: var(–mono); font-size: 11px; color: var(–text2); text-align: center; line-height: 1.7; }
-.drop-text strong { display: block; color: var(–text); font-size: 13px; margin-bottom: 4px; }
 
-#img-preview { display: none; width: 100%; border-radius: 6px; overflow: hidden; position: relative; }
-#img-preview img { width: 100%; height: 200px; object-fit: cover; display: block; }
-.img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,8,0.8) 0%, transparent 50%); display: flex; align-items: flex-end; padding: 10px; }
-.img-name { font-family: var(–mono); font-size: 10px; color: rgba(255,255,255,0.4); }
+.drop-area:hover,
+.drop-area.dragover {
+  border-color: #7c5cfc;
+  background: rgba(124, 92, 252, 0.04);
+}
 
-/* TF */
-.tf-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0; }
+.drop-area input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.drop-content {
+  pointer-events: none;
+}
+
+.drop-emoji {
+  font-size: 34px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.drop-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ccccdd;
+  margin-bottom: 6px;
+}
+
+.drop-sub {
+  font-size: 12px;
+  color: #444455;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.preview-wrap {
+  display: none;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.preview-wrap img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+}
+
+.preview-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  padding: 12px 14px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* TIMEFRAME */
+.tf-section {
+  margin-top: 20px;
+}
+
+.tf-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 .tf-btn {
-background: var(–bg3); border: 1px solid var(–border2); border-radius: 4px;
-padding: 5px 11px; color: var(–text2); font-family: var(–mono); font-size: 11px;
-cursor: pointer; transition: all 0.15s; letter-spacing: 1px;
-}
-.tf-btn:hover { color: var(–text); border-color: var(–text3); }
-.tf-btn.active { background: rgba(0,255,136,0.07); border-color: var(–green); color: var(–green); }
-
-/* ANALYZE BTN */
-.analyze-btn {
-width: 100%; background: transparent; border: 1px solid var(–green); border-radius: 6px;
-padding: 13px; color: var(–green); font-family: var(–display); font-size: 22px;
-letter-spacing: 3px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
-}
-.analyze-btn::before { content: ‘’; position: absolute; inset: 0; background: var(–green); opacity: 0; transition: opacity 0.2s; }
-.analyze-btn:hover:not(:disabled)::before { opacity: 0.05; }
-.analyze-btn:hover:not(:disabled) { box-shadow: 0 0 24px rgba(0,255,136,0.18); }
-.analyze-btn:disabled { opacity: 0.2; cursor: not-allowed; border-color: var(–text3); color: var(–text3); }
-.analyze-btn span { position: relative; z-index: 1; }
-
-/* RIGHT COLUMN */
-.right-col { display: flex; flex-direction: column; gap: 16px; }
-
-/* RESULT */
-.result-empty {
-display: flex; flex-direction: column; align-items: center; justify-content: center;
-min-height: 160px; gap: 10px; color: var(–text3);
-}
-.result-empty .big { font-size: 32px; opacity: 0.3; font-family: var(–mono); }
-.result-empty p { font-family: var(–mono); font-size: 11px; letter-spacing: 2px; }
-.result-data { display: none; }
-
-.pair-chip {
-display: inline-flex; align-items: center; gap: 6px;
-background: rgba(68,136,255,0.08); border: 1px solid rgba(68,136,255,0.25);
-border-radius: 4px; padding: 4px 10px; font-family: var(–mono); font-size: 11px;
-color: var(–blue); margin-bottom: 14px;
+  background: #0d0d18;
+  border: 1px solid #1e1e2e;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #555570;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.signal-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-.signal { font-family: var(–display); font-size: 46px; letter-spacing: 3px; line-height: 1; }
-.signal.buy { color: var(–green); text-shadow: 0 0 30px rgba(0,255,136,0.35); }
-.signal.sell { color: var(–red); text-shadow: 0 0 30px rgba(255,51,85,0.35); }
-.signal.wait { color: var(–yellow); text-shadow: 0 0 30px rgba(255,204,0,0.35); }
-.conf-block { text-align: right; }
-.conf-label { font-family: var(–mono); font-size: 9px; color: var(–text2); letter-spacing: 2px; }
-.conf-val { font-family: var(–display); font-size: 28px; }
-
-.levels { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
-.lvl { background: var(–bg3); border: 1px solid var(–border); border-radius: 6px; padding: 12px; }
-.lvl-label { font-family: var(–mono); font-size: 9px; color: var(–text2); letter-spacing: 2px; margin-bottom: 5px; }
-.lvl-val { font-family: var(–mono); font-size: 15px; font-weight: 700; }
-.lvl-val.entry { color: var(–text); }
-.lvl-val.tp { color: var(–green); }
-.lvl-val.sl { color: var(–red); }
-.lvl-sub { font-family: var(–mono); font-size: 9px; color: var(–text3); margin-top: 3px; }
-
-.analysis-box {
-background: var(–bg3); border-left: 2px solid var(–green);
-border-radius: 0 4px 4px 0; padding: 12px 14px;
-font-size: 13px; line-height: 1.7; color: #9090b8;
+.tf-btn:hover {
+  border-color: #7c5cfc;
+  color: #a090ff;
 }
 
-/* BOTTOM */
-.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.tf-btn.active {
+  background: rgba(124, 92, 252, 0.12);
+  border-color: #7c5cfc;
+  color: #a090ff;
+  font-weight: 500;
+}
+
+/* ANALYZE BUTTON */
+.btn-analyze {
+  width: 100%;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #7c5cfc, #a078ff);
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 24px rgba(124, 92, 252, 0.25);
+}
+
+.btn-analyze:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(124, 92, 252, 0.35);
+}
+
+.btn-analyze:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== RESULT CARD ===== */
+.result-card {
+  grid-column: 2;
+  grid-row: 1;
+  position: relative;
+  min-height: 240px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  gap: 10px;
+  color: #333345;
+}
+
+.empty-icon {
+  font-size: 36px;
+  opacity: 0.4;
+}
+
+.empty-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.result-content {
+  display: none;
+}
+
+/* Signal */
+.signal-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.signal-badge {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.signal-badge.buy { color: #5fce8f; text-shadow: 0 0 24px rgba(95, 206, 143, 0.3); }
+.signal-badge.sell { color: #ff5577; text-shadow: 0 0 24px rgba(255, 85, 119, 0.3); }
+.signal-badge.wait { color: #ffcc44; text-shadow: 0 0 24px rgba(255, 204, 68, 0.3); }
+
+.pair-info {
+  text-align: right;
+}
+
+.pair-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: #a090ff;
+  margin-bottom: 4px;
+}
+
+.conf-label {
+  font-size: 11px;
+  color: #444460;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.conf-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: #f0f0f0;
+}
+
+/* Levels */
+.levels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.level-box {
+  background: #0d0d18;
+  border: 1px solid #1e1e2e;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.level-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #444460;
+  margin-bottom: 6px;
+}
+
+.level-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.level-value.entry { color: #f0f0f0; }
+.level-value.tp { color: #5fce8f; }
+.level-value.sl { color: #ff5577; }
+
+.level-note {
+  font-size: 10px;
+  color: #333345;
+  line-height: 1.3;
+}
+
+/* Analysis text */
+.analysis-text {
+  background: #0d0d18;
+  border-left: 2px solid #7c5cfc;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #8888aa;
+}
+
+/* ===== STATS CARD ===== */
+.stats-card {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+
 .stat-row {
-display: flex; justify-content: space-between; align-items: center;
-padding: 8px 0; border-bottom: 1px solid var(–border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid #1a1a28;
+  font-size: 13px;
 }
-.stat-row:last-child { border-bottom: none; }
-.stat-name { font-family: var(–mono); font-size: 10px; color: var(–text2); letter-spacing: 1px; }
-.stat-val { font-family: var(–mono); font-size: 12px; font-weight: 700; }
-.advice-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(–border); font-size: 12px; line-height: 1.5; color: #7878a8; }
-.advice-item:last-child { border-bottom: none; }
 
-/* LOADING */
-.loading-overlay {
-display: none; position: absolute; inset: 0; background: rgba(5,5,8,0.9);
-border-radius: 8px; align-items: center; justify-content: center;
-flex-direction: column; gap: 14px; z-index: 50; backdrop-filter: blur(4px);
+.stat-row:last-child {
+  border-bottom: none;
 }
-.loading-overlay.show { display: flex; }
-.loader { width: 34px; height: 34px; border: 2px solid var(–border2); border-top-color: var(–green); border-radius: 50%; animation: spin 0.7s linear infinite; }
-.loader-text { font-family: var(–mono); font-size: 11px; color: var(–text2); letter-spacing: 2px; animation: pulse 1.5s ease infinite; }
 
-/* ANIMATIONS */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-@media (max-width: 740px) {
-.grid { grid-template-columns: 1fr; }
-.bottom-grid { grid-template-columns: 1fr; }
-.levels { grid-template-columns: 1fr; }
+.stat-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #444460;
+  letter-spacing: 1px;
 }
+
+.stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== ADVICE CARD ===== */
+.advice-card {
+  grid-column: 1 / 3;
+}
+
+.advice-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.advice-item {
+  background: #0d0d18;
+  border: 1px solid #1a1a28;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.advice-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.advice-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #7070a0;
+}
+
+/* ===== LOADING OVERLAY ===== */
+.loading {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 13, 24, 0.92);
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+}
+
+.loading.show {
+  display: flex;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #1e1e2e;
+  border-top-color: #7c5cfc;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #555570;
+  letter-spacing: 2px;
+  animation: blink 1.5s ease infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  margin-top: 36px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #2a2a3a;
+  letter-spacing: 1px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header { animation: fadeUp 0.5s ease both; }
+.secret-bar { animation: fadeUp 0.5s 0.05s ease both; }
+.upload-card { animation: fadeUp 0.5s 0.1s ease both; }
+.result-card { animation: fadeUp 0.5s 0.15s ease both; }
+.stats-card { animation: fadeUp 0.5s 0.2s ease both; }
+.advice-card { animation: fadeUp 0.5s 0.25s ease both; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 680px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .upload-card { grid-column: 1; grid-row: auto; }
+  .result-card { grid-column: 1; grid-row: auto; }
+  .stats-card { grid-column: 1; grid-row: auto; }
+  .advice-card { grid-column: 1; grid-row: auto; }
+  .advice-list { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .levels { grid-template-columns: 1fr; }
+}
+
 </style>
 
 </head>
 <body>
-<div class="wrap">
 
-  <header>
-    <div class="logo">
-      <div class="logo-main">FOREX<span>VISION</span></div>
-      <div class="logo-sub">AI&nbsp;TERMINAL</div>
+<div class="page">
+
+  <!-- HEADER -->
+
+  <div class="header">
+    <div class="header-logo">Forex<span>Vision</span></div>
+    <div class="header-badge">
+      <div class="pulse"></div>
+      AI POWERED
     </div>
-    <div class="status"><div class="dot"></div>&nbsp;LIVE</div>
-  </header>
-
-  <div class="api-bar">
-    <span class="api-label">GROQ API</span>
-    <div class="api-sep"></div>
-    <input type="password" id="api-key" class="api-input" placeholder="gsk_... — Clé gratuite sur console.groq.com" oninput="onKeyInput()">
-    <span class="api-ok" id="api-ok">✓ SAUVEGARDÉ</span>
   </div>
+
+  <!-- SECRET CODE BAR -->
+
+  <div class="secret-bar">
+    <span class="secret-label">Code Secret</span>
+    <div class="secret-divider"></div>
+    <input
+      type="password"
+      id="api-input"
+      class="secret-input"
+      placeholder="Entrez votre code secret ici..."
+      oninput="handleKeyInput()"
+    >
+    <span class="secret-saved" id="saved-label">&#10003; Sauvegarde</span>
+  </div>
+
+  <!-- GRID -->
 
   <div class="grid">
 
 ```
-<!-- LEFT -->
-<div class="card">
-  <div class="sec-title">GRAPHIQUE</div>
-  <div class="drop-zone" id="drop-zone">
+<!-- UPLOAD CARD -->
+<div class="card upload-card">
+  <div class="card-title">Graphique</div>
+
+  <div class="drop-area" id="drop-area">
     <input type="file" id="file-input" accept="image/*">
-    <div id="drop-prompt">
-      <div class="drop-icon">📊</div>
-      <div class="drop-text"><strong>Déposer votre screenshot ici</strong>TradingView · MT4 · MT5<br>PNG · JPG · WEBP</div>
+    <div class="drop-content" id="drop-prompt">
+      <span class="drop-emoji">&#128202;</span>
+      <div class="drop-title">Deposer votre screenshot</div>
+      <div class="drop-sub">TradingView &middot; MT4 &middot; MT5</div>
     </div>
-    <div id="img-preview">
-      <img id="preview-img" src="" alt="">
-      <div class="img-overlay"><span class="img-name" id="img-name"></span></div>
+    <div class="preview-wrap" id="preview-wrap">
+      <img id="preview-img" src="" alt="preview">
+      <div class="preview-label" id="preview-name"></div>
     </div>
   </div>
 
-  <div class="sec-title" style="margin-top:16px;">TIMEFRAME</div>
-  <div class="tf-row">
-    <button class="tf-btn" data-tf="M1">M1</button>
-    <button class="tf-btn" data-tf="M5">M5</button>
-    <button class="tf-btn" data-tf="M15">M15</button>
-    <button class="tf-btn" data-tf="M30">M30</button>
-    <button class="tf-btn active" data-tf="H1">H1</button>
-    <button class="tf-btn" data-tf="H4">H4</button>
-    <button class="tf-btn" data-tf="D1">D1</button>
-    <button class="tf-btn" data-tf="W1">W1</button>
+  <div class="tf-section">
+    <div class="card-title">Timeframe</div>
+    <div class="tf-grid">
+      <button class="tf-btn" data-tf="M1">M1</button>
+      <button class="tf-btn" data-tf="M5">M5</button>
+      <button class="tf-btn" data-tf="M15">M15</button>
+      <button class="tf-btn" data-tf="M30">M30</button>
+      <button class="tf-btn active" data-tf="H1">H1</button>
+      <button class="tf-btn" data-tf="H4">H4</button>
+      <button class="tf-btn" data-tf="D1">D1</button>
+      <button class="tf-btn" data-tf="W1">W1</button>
+    </div>
   </div>
 
-  <button class="analyze-btn" id="analyze-btn" disabled onclick="runAnalysis()">
-    <span>⚡ ANALYSER</span>
+  <button class="btn-analyze" id="btn-analyze" disabled onclick="runAnalysis()">
+    Analyser le graphique
   </button>
 </div>
 
-<!-- RIGHT -->
-<div class="right-col">
+<!-- RESULT CARD -->
+<div class="card result-card" id="result-card">
+  <div class="card-title">Analyse IA</div>
 
-  <!-- RESULT -->
-  <div class="card" style="position:relative;">
-    <div class="sec-title">ANALYSE IA</div>
-    <div class="result-empty" id="result-empty">
-      <div class="big">&#9670;</div>
-      <p>EN ATTENTE D'UN GRAPHIQUE</p>
-    </div>
-    <div class="result-data" id="result-data">
-      <div id="pair-chip-wrap"></div>
-      <div class="signal-row">
-        <div class="signal buy" id="signal-txt">BUY</div>
-        <div class="conf-block">
-          <div class="conf-label">CONFIANCE</div>
-          <div class="conf-val" id="conf-val">-%</div>
-        </div>
-      </div>
-      <div class="levels">
-        <div class="lvl">
-          <div class="lvl-label">ENTRÉE</div>
-          <div class="lvl-val entry" id="entry-val">-</div>
-          <div class="lvl-sub" id="entry-sub">Zone d'entrée</div>
-        </div>
-        <div class="lvl">
-          <div class="lvl-label">TAKE PROFIT</div>
-          <div class="lvl-val tp" id="tp-val">-</div>
-          <div class="lvl-sub" id="tp-sub">Objectif</div>
-        </div>
-        <div class="lvl">
-          <div class="lvl-label">STOP LOSS</div>
-          <div class="lvl-val sl" id="sl-val">-</div>
-          <div class="lvl-sub" id="sl-sub">Invalidation</div>
-        </div>
-      </div>
-      <div class="analysis-box" id="analysis-txt"></div>
-    </div>
-    <div class="loading-overlay" id="loading">
-      <div class="loader"></div>
-      <div class="loader-text">ANALYSE EN COURS...</div>
-    </div>
+  <div class="empty-state" id="empty-state">
+    <div class="empty-icon">&#128269;</div>
+    <div class="empty-text">En attente d'un graphique</div>
   </div>
 
-  <!-- STATS + ADVICE -->
-  <div class="card">
-    <div class="bottom-grid">
-      <div>
-        <div class="sec-title">STATISTIQUES</div>
-        <div class="stat-row"><span class="stat-name">PAIRE</span><span class="stat-val" id="s-pair" style="color:var(--blue)">-</span></div>
-        <div class="stat-row"><span class="stat-name">RATIO R/R</span><span class="stat-val" id="s-rr" style="color:var(--green)">-</span></div>
-        <div class="stat-row"><span class="stat-name">TENDANCE</span><span class="stat-val" id="s-trend">-</span></div>
-        <div class="stat-row"><span class="stat-name">MOMENTUM</span><span class="stat-val" id="s-momentum">-</span></div>
-        <div class="stat-row"><span class="stat-name">SETUP</span><span class="stat-val" id="s-setup">-</span></div>
-        <div class="stat-row"><span class="stat-name">STRUCTURE</span><span class="stat-val" id="s-structure">-</span></div>
+  <div class="result-content" id="result-content">
+    <div class="signal-row">
+      <div class="signal-badge buy" id="signal-badge">BUY</div>
+      <div class="pair-info">
+        <div class="pair-name" id="pair-name">---</div>
+        <div class="conf-label">Confiance</div>
+        <div class="conf-value" id="conf-value">--%</div>
       </div>
-      <div>
-        <div class="sec-title">CONSEILS</div>
-        <div id="advice-list">
-          <div class="advice-item"><span>◈</span><span>Lancez une analyse pour obtenir des conseils personnalisés.</span></div>
-          <div class="advice-item"><span>⚠</span><span>Ne jamais risquer plus de 1-2% du capital par trade.</span></div>
-        </div>
+    </div>
+
+    <div class="levels">
+      <div class="level-box">
+        <div class="level-label">Entree</div>
+        <div class="level-value entry" id="entry-val">--</div>
+        <div class="level-note" id="entry-note">Zone d'entree</div>
+      </div>
+      <div class="level-box">
+        <div class="level-label">Take Profit</div>
+        <div class="level-value tp" id="tp-val">--</div>
+        <div class="level-note" id="tp-note">Objectif</div>
+      </div>
+      <div class="level-box">
+        <div class="level-label">Stop Loss</div>
+        <div class="level-value sl" id="sl-val">--</div>
+        <div class="level-note" id="sl-note">Invalidation</div>
+      </div>
+    </div>
+
+    <div class="analysis-text" id="analysis-text"></div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Analyse en cours...</div>
+  </div>
+</div>
+
+<!-- STATS CARD -->
+<div class="card stats-card">
+  <div class="card-title">Statistiques</div>
+  <div class="stats-grid">
+    <div>
+      <div class="stat-row">
+        <span class="stat-name">PAIRE</span>
+        <span class="stat-val" id="s-pair" style="color:#a090ff">--</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-name">RATIO R/R</span>
+        <span class="stat-val" id="s-rr" style="color:#5fce8f">--</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-name">TENDANCE</span>
+        <span class="stat-val" id="s-trend">--</span>
+      </div>
+    </div>
+    <div>
+      <div class="stat-row">
+        <span class="stat-name">MOMENTUM</span>
+        <span class="stat-val" id="s-momentum">--</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-name">SETUP</span>
+        <span class="stat-val" id="s-setup">--</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-name">STRUCTURE</span>
+        <span class="stat-val" id="s-structure">--</span>
       </div>
     </div>
   </div>
+</div>
 
+<!-- ADVICE CARD -->
+<div class="card advice-card">
+  <div class="card-title">Conseils</div>
+  <div class="advice-list" id="advice-list">
+    <div class="advice-item">
+      <span class="advice-icon">&#128161;</span>
+      <span class="advice-text">Lancez une analyse pour obtenir des conseils personnalises.</span>
+    </div>
+    <div class="advice-item">
+      <span class="advice-icon">&#9888;</span>
+      <span class="advice-text">Ne risquez jamais plus de 1 a 2% de votre capital par trade.</span>
+    </div>
+    <div class="advice-item">
+      <span class="advice-icon">&#128200;</span>
+      <span class="advice-text">Confirmez toujours votre setup sur plusieurs timeframes.</span>
+    </div>
+    <div class="advice-item">
+      <span class="advice-icon">&#128737;</span>
+      <span class="advice-text">Utilisez toujours un stop loss et respectez votre plan de trading.</span>
+    </div>
+  </div>
 </div>
 ```
 
   </div>
+
+  <div class="footer">ForexVision &mdash; Pour usage educatif uniquement</div>
+
 </div>
 
 <script>
+
   let imageBase64 = null;
   let selectedTf = 'H1';
 
   // Load saved key
-  const saved = localStorage.getItem('fx_groq_key');
-  if (saved) {
-    document.getElementById('api-key').value = saved;
-    document.getElementById('api-ok').classList.add('show');
+  const savedKey = localStorage.getItem('fxv_key');
+  if (savedKey) {
+    document.getElementById('api-input').value = savedKey;
+    document.getElementById('saved-label').classList.add('visible');
     checkReady();
   }
 
-  function onKeyInput() {
-    const k = document.getElementById('api-key').value.trim();
+  function handleKeyInput() {
+    const k = document.getElementById('api-input').value.trim();
+    const label = document.getElementById('saved-label');
     if (k.length > 10) {
-      localStorage.setItem('fx_groq_key', k);
-      document.getElementById('api-ok').classList.add('show');
+      localStorage.setItem('fxv_key', k);
+      label.classList.add('visible');
     } else {
-      localStorage.removeItem('fx_groq_key');
-      document.getElementById('api-ok').classList.remove('show');
+      localStorage.removeItem('fxv_key');
+      label.classList.remove('visible');
     }
     checkReady();
   }
 
-  document.querySelectorAll('.tf-btn').forEach(b => {
-    b.addEventListener('click', () => {
-      document.querySelectorAll('.tf-btn').forEach(x => x.classList.remove('active'));
-      b.classList.add('active');
-      selectedTf = b.dataset.tf;
+  // Timeframe buttons
+  document.querySelectorAll('.tf-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tf-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedTf = btn.dataset.tf;
     });
   });
 
-  const dropZone = document.getElementById('drop-zone');
-  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('over'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
-  dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('over'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
-  document.getElementById('file-input').addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+  // Upload
+  var dropArea = document.getElementById('drop-area');
+  var fileInput = document.getElementById('file-input');
+
+  dropArea.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropArea.classList.add('dragover');
+  });
+
+  dropArea.addEventListener('dragleave', function() {
+    dropArea.classList.remove('dragover');
+  });
+
+  dropArea.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropArea.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+
+  fileInput.addEventListener('change', function(e) {
+    if (e.target.files[0]) handleFile(e.target.files[0]);
+  });
 
   function handleFile(file) {
     if (!file.type.startsWith('image/')) return;
-    const r = new FileReader();
-    r.onload = e => {
+    var reader = new FileReader();
+    reader.onload = function(e) {
       imageBase64 = e.target.result.split(',')[1];
       document.getElementById('preview-img').src = e.target.result;
-      document.getElementById('img-name').textContent = file.name;
+      document.getElementById('preview-name').textContent = file.name;
       document.getElementById('drop-prompt').style.display = 'none';
-      document.getElementById('img-preview').style.display = 'block';
+      var pw = document.getElementById('preview-wrap');
+      pw.style.display = 'block';
+      dropArea.style.padding = '0';
+      dropArea.style.border = 'none';
       checkReady();
     };
-    r.readAsDataURL(file);
+    reader.readAsDataURL(file);
   }
 
   function checkReady() {
-    const k = document.getElementById('api-key').value.trim();
-    document.getElementById('analyze-btn').disabled = !(imageBase64 && k.length > 10);
+    var k = document.getElementById('api-input').value.trim();
+    document.getElementById('btn-analyze').disabled = !(imageBase64 && k.length > 10);
   }
 
+  // Analysis
   async function runAnalysis() {
-    const apiKey = document.getElementById('api-key').value.trim();
+    var apiKey = document.getElementById('api-input').value.trim();
     if (!apiKey || !imageBase64) return;
 
     document.getElementById('loading').classList.add('show');
-    document.getElementById('analyze-btn').disabled = true;
+    document.getElementById('btn-analyze').disabled = true;
 
-    const prompt = `Tu es un analyste technique Forex & matières premières de niveau institutionnel. Analyse ce graphique de trading avec une précision maximale.
-
-INSTRUCTIONS :
-1. Identifie AUTOMATIQUEMENT la paire tradée (EUR/USD, GBP/USD, XAU/USD, USD/JPY, NAS100, SP500, BTC/USD, etc.) en lisant les labels visibles sur le graphique
-2. Analyse approfondie : structure de marché (Higher Highs/Higher Lows ou Lower Highs/Lower Lows), zones de support/résistance clés, patterns de chandeliers (pin bar, engulfing, doji, etc.), indicateurs visibles (EMA, MA, RSI, MACD, Bollinger Bands, etc.), niveaux psychologiques importants
-3. Donne des niveaux de prix EXACTS en lisant les valeurs sur le graphique
-4. Timeframe : ${selectedTf}
-
-Réponds UNIQUEMENT avec ce JSON valide, sans aucun texte avant ou après :
-{"pair":"XAU/USD","signal":"BUY","confidence":78,"entry":"2342.50","entry_note":"Rebond sur support H1","tp":"2368.00","tp_note":"Résistance majeure R/R 1:2","sl":"2330.00","sl_note":"Sous le dernier bas","rr_ratio":"1:2.1","trend":"Haussier","momentum":"Fort","setup":"Pullback EMA50","structure":"HH/HL confirmé","analysis":"Analyse détaillée : décris la structure de marché, le pattern identifié, les confluences techniques clés et la logique précise du signal. Mentionne les indicateurs visibles et les niveaux importants.","advices":[{"icon":"✅","text":"Conseil précis basé sur ce graphique"},{"icon":"⚠️","text":"Risque spécifique à ce setup"},{"icon":"📊","text":"Confirmation à attendre avant d'entrer"},{"icon":"💡","text":"Conseil gestion du trade"}]}`;
+    var prompt = "Tu es un analyste technique Forex et matieres premieres de niveau institutionnel. Analyse ce graphique de trading avec une precision maximale.\n\nINSTRUCTIONS :\n1. Identifie AUTOMATIQUEMENT la paire tradee (EUR/USD, GBP/USD, XAU/USD, USD/JPY, NAS100, SP500, BTC/USD, etc.) en lisant les labels visibles sur le graphique\n2. Analyse complete : structure de marche (Higher Highs/Higher Lows), zones de support et resistance, patterns de chandeliers (pin bar, engulfing, doji), indicateurs visibles (EMA, RSI, MACD, Bollinger), niveaux psychologiques\n3. Donne des niveaux de prix EXACTS en lisant les valeurs sur le graphique\n4. Timeframe analyse : " + selectedTf + "\n\nReponds UNIQUEMENT avec ce JSON valide, sans aucun texte avant ou apres :\n{\"pair\":\"XAU/USD\",\"signal\":\"BUY\",\"confidence\":78,\"entry\":\"2342.50\",\"entry_note\":\"Rebond support H1\",\"tp\":\"2368.00\",\"tp_note\":\"Resistance majeure R/R 1:2\",\"sl\":\"2330.00\",\"sl_note\":\"Sous le dernier bas\",\"rr_ratio\":\"1:2.1\",\"trend\":\"Haussier\",\"momentum\":\"Fort\",\"setup\":\"Pullback EMA50\",\"structure\":\"HH/HL confirme\",\"analysis\":\"Analyse detaillee : decris la structure de marche, le pattern identifie, les confluences techniques et la logique du signal. Mentionne les indicateurs visibles et les niveaux cles.\",\"advices\":[{\"icon\":\"checkmark\",\"text\":\"Conseil precis base sur ce graphique\"},{\"icon\":\"warning\",\"text\":\"Risque specifique a ce setup\"},{\"icon\":\"chart\",\"text\":\"Confirmation a attendre avant d'entrer\"},{\"icon\":\"idea\",\"text\":\"Conseil gestion du trade\"}]}";
 
     try {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      var response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiKey
+        },
         body: JSON.stringify({
           model: "meta-llama/llama-4-scout-17b-16e-instruct",
-          max_tokens: 1200, temperature: 0.1,
-          messages: [{ role: "user", content: [
-            { type: "image_url", image_url: { url: `data:image/jpeg;base64,${imageBase64}` } },
-            { type: "text", text: prompt }
-          ]}]
+          max_tokens: 1200,
+          temperature: 0.1,
+          messages: [{
+            role: "user",
+            content: [
+              { type: "image_url", image_url: { url: "data:image/jpeg;base64," + imageBase64 } },
+              { type: "text", text: prompt }
+            ]
+          }]
         })
       });
-      const data = await res.json();
+
+      var data = await response.json();
       if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-      let text = data.choices[0].message.content.trim();
-      text = text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
-      const m = text.match(/\{[\s\S]*\}/);
-      if (!m) throw new Error("Réponse IA invalide");
-      renderResult(JSON.parse(m[0]));
+
+      var text = data.choices[0].message.content.trim();
+      text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      var match = text.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error("Reponse IA invalide");
+
+      var r = JSON.parse(match[0]);
+      showResult(r);
+
     } catch(err) {
-      renderError(err.message);
+      showError(err.message);
     } finally {
       document.getElementById('loading').classList.remove('show');
-      document.getElementById('analyze-btn').disabled = false;
+      document.getElementById('btn-analyze').disabled = false;
     }
   }
 
-  function renderResult(r) {
-    document.getElementById('result-empty').style.display = 'none';
-    document.getElementById('result-data').style.display = 'block';
-    document.getElementById('pair-chip-wrap').innerHTML = r.pair ? `<div class="pair-chip">◈ ${r.pair} · ${selectedTf}</div>` : '';
-    const sig = document.getElementById('signal-txt');
-    sig.textContent = r.signal || '—';
-    sig.className = 'signal ' + (r.signal==='BUY'?'buy':r.signal==='SELL'?'sell':'wait');
-    document.getElementById('conf-val').textContent = (r.confidence||'—') + '%';
-    document.getElementById('entry-val').textContent = r.entry || '—';
-    document.getElementById('tp-val').textContent = r.tp || '—';
-    document.getElementById('sl-val').textContent = r.sl || '—';
-    if (r.entry_note) document.getElementById('entry-sub').textContent = r.entry_note;
-    if (r.tp_note) document.getElementById('tp-sub').textContent = r.tp_note;
-    if (r.sl_note) document.getElementById('sl-sub').textContent = r.sl_note;
-    document.getElementById('analysis-txt').textContent = r.analysis || '';
-    document.getElementById('s-pair').textContent = r.pair || '-';
-    document.getElementById('s-rr').textContent = r.rr_ratio || '—';
-    document.getElementById('s-trend').textContent = r.trend || '—';
-    document.getElementById('s-momentum').textContent = r.momentum || '—';
-    document.getElementById('s-setup').textContent = r.setup || '—';
-    document.getElementById('s-structure').textContent = r.structure || '—';
-    if (r.advices?.length) {
-      document.getElementById('advice-list').innerHTML = r.advices.map(a =>
-        `<div class="advice-item"><span>${a.icon}</span><span>${a.text}</span></div>`
-      ).join('');
+  var iconMap = {
+    'checkmark': '&#10003;',
+    'warning': '&#9888;',
+    'chart': '&#128200;',
+    'idea': '&#128161;'
+  };
+
+  function showResult(r) {
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('result-content').style.display = 'block';
+
+    // Signal
+    var badge = document.getElementById('signal-badge');
+    badge.textContent = r.signal || '--';
+    badge.className = 'signal-badge ' + (r.signal === 'BUY' ? 'buy' : r.signal === 'SELL' ? 'sell' : 'wait');
+
+    // Pair & confidence
+    document.getElementById('pair-name').textContent = (r.pair || '--') + ' - ' + selectedTf;
+    document.getElementById('conf-value').textContent = (r.confidence || '--') + '%';
+
+    // Levels
+    document.getElementById('entry-val').textContent = r.entry || '--';
+    document.getElementById('tp-val').textContent = r.tp || '--';
+    document.getElementById('sl-val').textContent = r.sl || '--';
+    if (r.entry_note) document.getElementById('entry-note').textContent = r.entry_note;
+    if (r.tp_note) document.getElementById('tp-note').textContent = r.tp_note;
+    if (r.sl_note) document.getElementById('sl-note').textContent = r.sl_note;
+
+    // Analysis
+    document.getElementById('analysis-text').textContent = r.analysis || '';
+
+    // Stats
+    document.getElementById('s-pair').textContent = r.pair || '--';
+    document.getElementById('s-rr').textContent = r.rr_ratio || '--';
+    document.getElementById('s-trend').textContent = r.trend || '--';
+    document.getElementById('s-momentum').textContent = r.momentum || '--';
+    document.getElementById('s-setup').textContent = r.setup || '--';
+    document.getElementById('s-structure').textContent = r.structure || '--';
+
+    // Advice
+    if (r.advices && r.advices.length) {
+      var icons = ['&#10003;', '&#9888;', '&#128200;', '&#128161;'];
+      document.getElementById('advice-list').innerHTML = r.advices.map(function(a, i) {
+        var icon = iconMap[a.icon] || icons[i] || '&#9679;';
+        return '<div class="advice-item"><span class="advice-icon">' + icon + '</span><span class="advice-text">' + a.text + '</span></div>';
+      }).join('');
     }
   }
 
-  function renderError(msg) {
-    document.getElementById('result-empty').style.display = 'flex';
-    document.getElementById('result-empty').innerHTML = `<div class="big" style="color:var(--red)">[ ✕ ]</div><p style="color:var(--red);font-size:10px;">${msg}</p>`;
-    document.getElementById('result-data').style.display = 'none';
+  function showError(msg) {
+    document.getElementById('empty-state').style.display = 'flex';
+    document.getElementById('empty-state').innerHTML = '<div class="empty-icon" style="color:#ff5577">&#9888;</div><div class="empty-text" style="color:#ff5577;font-size:10px;">' + msg + '</div>';
+    document.getElementById('result-content').style.display = 'none';
   }
+
 </script>
 
 </body>
