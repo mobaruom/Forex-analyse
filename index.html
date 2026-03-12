@@ -750,12 +750,22 @@ html, body {
         { model: 'gpt-4o' }
       );
 
-      // Format confirme par la doc Puter : response.message.content est une string
-      var text = response.message.content;
+      // Debug: afficher la reponse brute
+      var rawDebug = JSON.stringify(response).substring(0, 300);
+      
+      var text = '';
+      try {
+        if (typeof response === 'string') text = response;
+        else if (response && response.message && typeof response.message.content === 'string') text = response.message.content;
+        else if (response && response.message && Array.isArray(response.message.content)) text = response.message.content.map(function(x){ return x.text||''; }).join('');
+        else if (response && typeof response.toString === 'function') text = response.toString();
+        else text = JSON.stringify(response);
+      } catch(pe) { text = ''; }
+      
       text = text.trim();
       text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
       var match = text.match(/\{[\s\S]*\}/);
-      if (!match) throw new Error('Reponse IA invalide');
+      if (!match) throw new Error('DEBUG REPONSE: ' + rawDebug);
 
       var r = JSON.parse(match[0]);
       showResult(r);
