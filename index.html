@@ -771,7 +771,8 @@ html, body {
       showResult(r);
 
     } catch(err) {
-      showError(err.message || String(err));
+      var msg = (err && err.message) ? err.message : JSON.stringify(err);
+      showError(msg.substring(0, 200));
     } finally {
       document.getElementById('loading').classList.remove('show');
       document.getElementById('btn-analyze').disabled = false;
@@ -817,10 +818,11 @@ html, body {
   }
 
   function showError(msg) {
+    var safeMsg = (typeof msg === 'string') ? msg : JSON.stringify(msg);
     document.getElementById('empty-state').style.display = 'flex';
     document.getElementById('empty-state').innerHTML =
       '<div class="empty-icon" style="color:#ff5577">&#9888;</div>' +
-      '<div class="empty-text" style="color:#ff5577;font-size:10px;">' + msg + '</div>';
+      '<div class="empty-text" style="color:#ff5577;font-size:10px;">' + safeMsg.substring(0,250) + '</div>';
     document.getElementById('result-content').style.display = 'none';
   }
 
