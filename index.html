@@ -727,7 +727,7 @@ html, body {
     document.getElementById('loading').classList.add('show');
     document.getElementById('btn-analyze').disabled = true;
 
-    var prompt = 'Tu es un analyste technique Forex et matieres premieres de niveau institutionnel. Analyse ce graphique de trading avec une precision maximale.\n\nINSTRUCTIONS :\n1. Identifie AUTOMATIQUEMENT la paire tradee (EUR/USD, GBP/USD, XAU/USD, USD/JPY, NAS100, SP500, BTC/USD, etc.) en lisant les labels visibles sur le graphique\n2. Analyse complete : structure de marche (Higher Highs/Higher Lows), zones de support et resistance, patterns de chandeliers, indicateurs visibles (EMA, RSI, MACD, Bollinger), niveaux psychologiques\n3. Donne des niveaux de prix EXACTS en lisant les valeurs sur le graphique\n4. Timeframe analyse : ' + selectedTf + '\n\nReponds UNIQUEMENT avec ce JSON valide, sans aucun texte avant ou apres :\n{"pair":"XAU/USD","signal":"BUY","confidence":78,"entry":"2342.50","entry_note":"Rebond support H1","tp":"2368.00","tp_note":"Resistance majeure","sl":"2330.00","sl_note":"Sous le dernier bas","rr_ratio":"1:2.1","trend":"Haussier","momentum":"Fort","setup":"Pullback EMA50","structure":"HH/HL confirme","analysis":"Analyse detaillee de 3-4 phrases sur la structure, les patterns, les confluences et la logique du signal.","advices":[{"icon":"ok","text":"Conseil precis"},{"icon":"warn","text":"Risque a surveiller"},{"icon":"chart","text":"Confirmation a attendre"},{"icon":"idea","text":"Gestion du trade"}]}';
+    var prompt = 'Tu es un expert en lecture de graphiques financiers. Lis et decris ce graphique avec precision maximale.\n\nINSTRUCTIONS :\n1. Identifie AUTOMATIQUEMENT la paire tradee (EUR/USD, GBP/USD, XAU/USD, USD/JPY, NAS100, SP500, BTC/USD, etc.) en lisant les labels visibles sur le graphique\n2. Analyse complete : structure de marche (Higher Highs/Higher Lows), zones de support et resistance, patterns de chandeliers, indicateurs visibles (EMA, RSI, MACD, Bollinger), niveaux psychologiques\n3. Donne des niveaux de prix EXACTS en lisant les valeurs sur le graphique\n4. Timeframe analyse : ' + selectedTf + '\n\nReponds UNIQUEMENT avec ce JSON valide, sans aucun texte avant ou apres :\n{"pair":"XAU/USD","signal":"BUY","confidence":78,"entry":"2342.50","entry_note":"Rebond support H1","tp":"2368.00","tp_note":"Resistance majeure","sl":"2330.00","sl_note":"Sous le dernier bas","rr_ratio":"1:2.1","trend":"Haussier","momentum":"Fort","setup":"Pullback EMA50","structure":"HH/HL confirme","analysis":"Analyse detaillee de 3-4 phrases sur la structure, les patterns, les confluences et la logique du signal.","advices":[{"icon":"ok","text":"Conseil precis"},{"icon":"warn","text":"Risque a surveiller"},{"icon":"chart","text":"Confirmation a attendre"},{"icon":"idea","text":"Gestion du trade"}]}';
 
     try {
       // Puter.js - free unlimited AI, no API key needed
@@ -747,7 +747,7 @@ html, body {
             ]
           }
         ],
-        { model: 'gpt-4o' }
+        { model: 'claude-3-5-sonnet' }
       );
 
       // Debug: afficher la reponse brute
@@ -765,7 +765,7 @@ html, body {
       text = text.trim();
       text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
       var match = text.match(/\{[\s\S]*\}/);
-      if (!match) throw new Error('DEBUG REPONSE: ' + rawDebug);
+      if (!match) throw new Error('Reponse inattendue: ' + text.substring(0, 150));
 
       var r = JSON.parse(match[0]);
       showResult(r);
