@@ -750,22 +750,8 @@ html, body {
         { model: 'gpt-4o' }
       );
 
-      // Extraire le texte de la reponse Puter (plusieurs formats possibles)
-      var text = '';
-      if (typeof response === 'string') {
-        text = response;
-      } else if (response && response.message && response.message.content) {
-        var content = response.message.content;
-        if (typeof content === 'string') text = content;
-        else if (Array.isArray(content)) text = content.map(function(c){ return c.text || ''; }).join('');
-        else text = JSON.stringify(content);
-      } else if (response && response.content) {
-        text = typeof response.content === 'string' ? response.content : JSON.stringify(response.content);
-      } else if (response && response.text) {
-        text = response.text;
-      } else {
-        text = JSON.stringify(response);
-      }
+      // Format confirme par la doc Puter : response.message.content est une string
+      var text = response.message.content;
       text = text.trim();
       text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
       var match = text.match(/\{[\s\S]*\}/);
