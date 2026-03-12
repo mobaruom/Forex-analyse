@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0d0d0d">
 <title>ForexVision AI</title>
+<script src="https://js.puter.com/v2/"></script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -16,30 +17,26 @@
   box-sizing: border-box;
 }
 
-html {
-  background: #0d0d0d;
-}
-
-body {
+html, body {
   background: #0d0d0d;
   color: #f0f0f0;
   font-family: 'Outfit', sans-serif;
   min-height: 100vh;
 }
 
-/* ===== PAGE ===== */
 .page {
   max-width: 960px;
   margin: 0 auto;
   padding: 32px 20px 60px;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 28px;
+  animation: fadeUp 0.5s ease both;
 }
 
 .header-logo {
@@ -67,89 +64,34 @@ body {
   gap: 7px;
 }
 
-.pulse {
+.pulse-dot {
   width: 7px;
   height: 7px;
   background: #7c5cfc;
   border-radius: 50%;
-  animation: pulse 2s infinite;
+  animation: pulseDot 2s infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(124, 92, 252, 0.4); }
-  50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(124, 92, 252, 0); }
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(124,92,252,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(124,92,252,0); }
 }
 
-/* ===== SECRET CODE BAR ===== */
-.secret-bar {
-  background: #111118;
-  border: 1px solid #222230;
-  border-radius: 14px;
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.secret-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: #555570;
-  letter-spacing: 2px;
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.secret-divider {
-  width: 1px;
-  height: 18px;
-  background: #222230;
-  flex-shrink: 0;
-}
-
-.secret-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: #a090ff;
-  min-width: 0;
-}
-
-.secret-input::placeholder {
-  color: #333345;
-}
-
-.secret-saved {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: #5fce8f;
-  opacity: 0;
-  transition: opacity 0.4s;
-  white-space: nowrap;
-}
-
-.secret-saved.visible {
-  opacity: 1;
-}
-
-/* ===== GRID ===== */
+/* GRID */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 .card {
   background: #111118;
   border: 1px solid #1e1e2e;
   border-radius: 20px;
   padding: 24px;
   position: relative;
+  animation: fadeUp 0.5s ease both;
 }
 
 .card-title {
@@ -161,7 +103,7 @@ body {
   margin-bottom: 18px;
 }
 
-/* ===== UPLOAD CARD ===== */
+/* UPLOAD CARD */
 .upload-card {
   grid-column: 1;
   grid-row: 1 / 3;
@@ -175,7 +117,7 @@ body {
   cursor: pointer;
   position: relative;
   transition: border-color 0.2s, background 0.2s;
-  min-height: 180px;
+  min-height: 190px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,7 +126,7 @@ body {
 .drop-area:hover,
 .drop-area.dragover {
   border-color: #7c5cfc;
-  background: rgba(124, 92, 252, 0.04);
+  background: rgba(124,92,252,0.04);
 }
 
 .drop-area input[type="file"] {
@@ -196,9 +138,7 @@ body {
   height: 100%;
 }
 
-.drop-content {
-  pointer-events: none;
-}
+.drop-content { pointer-events: none; }
 
 .drop-emoji {
   font-size: 34px;
@@ -224,6 +164,7 @@ body {
   border-radius: 12px;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 .preview-wrap img {
@@ -244,9 +185,7 @@ body {
 }
 
 /* TIMEFRAME */
-.tf-section {
-  margin-top: 20px;
-}
+.tf-section { margin-top: 20px; }
 
 .tf-grid {
   display: flex;
@@ -267,13 +206,9 @@ body {
   transition: all 0.2s;
 }
 
-.tf-btn:hover {
-  border-color: #7c5cfc;
-  color: #a090ff;
-}
-
+.tf-btn:hover { border-color: #7c5cfc; color: #a090ff; }
 .tf-btn.active {
-  background: rgba(124, 92, 252, 0.12);
+  background: rgba(124,92,252,0.12);
   border-color: #7c5cfc;
   color: #a090ff;
   font-weight: 500;
@@ -294,12 +229,12 @@ body {
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 24px rgba(124, 92, 252, 0.25);
+  box-shadow: 0 4px 24px rgba(124,92,252,0.25);
 }
 
 .btn-analyze:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(124, 92, 252, 0.35);
+  box-shadow: 0 8px 32px rgba(124,92,252,0.35);
 }
 
 .btn-analyze:disabled {
@@ -309,7 +244,7 @@ body {
   box-shadow: none;
 }
 
-/* ===== RESULT CARD ===== */
+/* RESULT CARD */
 .result-card {
   grid-column: 2;
   grid-row: 1;
@@ -327,10 +262,7 @@ body {
   color: #333345;
 }
 
-.empty-icon {
-  font-size: 36px;
-  opacity: 0.4;
-}
+.empty-icon { font-size: 36px; opacity: 0.4; }
 
 .empty-text {
   font-family: 'JetBrains Mono', monospace;
@@ -339,9 +271,7 @@ body {
   text-transform: uppercase;
 }
 
-.result-content {
-  display: none;
-}
+.result-content { display: none; }
 
 /* Signal */
 .signal-row {
@@ -352,19 +282,17 @@ body {
 }
 
 .signal-badge {
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 800;
   letter-spacing: -1px;
   line-height: 1;
 }
 
-.signal-badge.buy { color: #5fce8f; text-shadow: 0 0 24px rgba(95, 206, 143, 0.3); }
-.signal-badge.sell { color: #ff5577; text-shadow: 0 0 24px rgba(255, 85, 119, 0.3); }
-.signal-badge.wait { color: #ffcc44; text-shadow: 0 0 24px rgba(255, 204, 68, 0.3); }
+.signal-badge.buy  { color: #5fce8f; text-shadow: 0 0 24px rgba(95,206,143,0.3); }
+.signal-badge.sell { color: #ff5577; text-shadow: 0 0 24px rgba(255,85,119,0.3); }
+.signal-badge.wait { color: #ffcc44; text-shadow: 0 0 24px rgba(255,204,68,0.3); }
 
-.pair-info {
-  text-align: right;
-}
+.pair-info { text-align: right; }
 
 .pair-name {
   font-family: 'JetBrains Mono', monospace;
@@ -420,16 +348,12 @@ body {
 }
 
 .level-value.entry { color: #f0f0f0; }
-.level-value.tp { color: #5fce8f; }
-.level-value.sl { color: #ff5577; }
+.level-value.tp    { color: #5fce8f; }
+.level-value.sl    { color: #ff5577; }
 
-.level-note {
-  font-size: 10px;
-  color: #333345;
-  line-height: 1.3;
-}
+.level-note { font-size: 10px; color: #333345; line-height: 1.3; }
 
-/* Analysis text */
+/* Analysis */
 .analysis-text {
   background: #0d0d18;
   border-left: 2px solid #7c5cfc;
@@ -440,7 +364,7 @@ body {
   color: #8888aa;
 }
 
-/* ===== STATS CARD ===== */
+/* STATS CARD */
 .stats-card {
   grid-column: 2;
   grid-row: 2;
@@ -458,12 +382,9 @@ body {
   align-items: center;
   padding: 9px 0;
   border-bottom: 1px solid #1a1a28;
-  font-size: 13px;
 }
 
-.stat-row:last-child {
-  border-bottom: none;
-}
+.stat-row:last-child { border-bottom: none; }
 
 .stat-name {
   font-family: 'JetBrains Mono', monospace;
@@ -478,10 +399,8 @@ body {
   font-weight: 600;
 }
 
-/* ===== ADVICE CARD ===== */
-.advice-card {
-  grid-column: 1 / 3;
-}
+/* ADVICE CARD */
+.advice-card { grid-column: 1 / 3; }
 
 .advice-list {
   display: grid;
@@ -499,24 +418,16 @@ body {
   align-items: flex-start;
 }
 
-.advice-icon {
-  font-size: 16px;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
+.advice-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
 
-.advice-text {
-  font-size: 13px;
-  line-height: 1.5;
-  color: #7070a0;
-}
+.advice-text { font-size: 13px; line-height: 1.5; color: #7070a0; }
 
-/* ===== LOADING OVERLAY ===== */
+/* LOADING */
 .loading {
   display: none;
   position: absolute;
   inset: 0;
-  background: rgba(13, 13, 24, 0.92);
+  background: rgba(13,13,24,0.92);
   border-radius: 20px;
   align-items: center;
   justify-content: center;
@@ -526,9 +437,7 @@ body {
   backdrop-filter: blur(6px);
 }
 
-.loading.show {
-  display: flex;
-}
+.loading.show { display: flex; }
 
 .spinner {
   width: 36px;
@@ -539,9 +448,7 @@ body {
   animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .loading-text {
   font-family: 'JetBrains Mono', monospace;
@@ -556,7 +463,7 @@ body {
   50% { opacity: 0.3; }
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 .footer {
   text-align: center;
   margin-top: 36px;
@@ -566,30 +473,24 @@ body {
   letter-spacing: 1px;
 }
 
-/* ===== ANIMATIONS ===== */
+/* ANIMATIONS */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.header { animation: fadeUp 0.5s ease both; }
-.secret-bar { animation: fadeUp 0.5s 0.05s ease both; }
-.upload-card { animation: fadeUp 0.5s 0.1s ease both; }
-.result-card { animation: fadeUp 0.5s 0.15s ease both; }
-.stats-card { animation: fadeUp 0.5s 0.2s ease both; }
-.advice-card { animation: fadeUp 0.5s 0.25s ease both; }
+.header        { animation-delay: 0.0s; }
+.upload-card   { animation-delay: 0.1s; }
+.result-card   { animation-delay: 0.15s; }
+.stats-card    { animation-delay: 0.2s; }
+.advice-card   { animation-delay: 0.25s; }
 
-/* ===== MOBILE ===== */
+/* MOBILE */
 @media (max-width: 680px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-  .upload-card { grid-column: 1; grid-row: auto; }
-  .result-card { grid-column: 1; grid-row: auto; }
-  .stats-card { grid-column: 1; grid-row: auto; }
-  .advice-card { grid-column: 1; grid-row: auto; }
-  .advice-list { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr; }
+  .upload-card, .result-card, .stats-card { grid-column: 1; grid-row: auto; }
+  .advice-card { grid-column: 1; }
+  .advice-list, .stats-grid { grid-template-columns: 1fr; }
   .levels { grid-template-columns: 1fr; }
 }
 
@@ -605,24 +506,9 @@ body {
   <div class="header">
     <div class="header-logo">Forex<span>Vision</span></div>
     <div class="header-badge">
-      <div class="pulse"></div>
+      <div class="pulse-dot"></div>
       AI POWERED
     </div>
-  </div>
-
-  <!-- SECRET CODE BAR -->
-
-  <div class="secret-bar">
-    <span class="secret-label">Code Secret</span>
-    <div class="secret-divider"></div>
-    <input
-      type="password"
-      id="api-input"
-      class="secret-input"
-      placeholder="Entrez votre code secret ici..."
-      oninput="handleKeyInput()"
-    >
-    <span class="secret-saved" id="saved-label">&#10003; Sauvegarde</span>
   </div>
 
   <!-- GRID -->
@@ -662,7 +548,7 @@ body {
   </div>
 
   <button class="btn-analyze" id="btn-analyze" disabled onclick="runAnalysis()">
-    Analyser le graphique
+    &#9889; Analyser le graphique
   </button>
 </div>
 
@@ -765,7 +651,7 @@ body {
     </div>
     <div class="advice-item">
       <span class="advice-icon">&#128737;</span>
-      <span class="advice-text">Utilisez toujours un stop loss et respectez votre plan de trading.</span>
+      <span class="advice-text">Utilisez toujours un stop loss et respectez votre plan.</span>
     </div>
   </div>
 </div>
@@ -774,34 +660,12 @@ body {
   </div>
 
   <div class="footer">ForexVision &mdash; Pour usage educatif uniquement</div>
-
 </div>
 
 <script>
 
-  let imageBase64 = null;
-  let selectedTf = 'H1';
-
-  // Load saved key
-  const savedKey = localStorage.getItem('fxv_key');
-  if (savedKey) {
-    document.getElementById('api-input').value = savedKey;
-    document.getElementById('saved-label').classList.add('visible');
-    checkReady();
-  }
-
-  function handleKeyInput() {
-    const k = document.getElementById('api-input').value.trim();
-    const label = document.getElementById('saved-label');
-    if (k.length > 10) {
-      localStorage.setItem('fxv_key', k);
-      label.classList.add('visible');
-    } else {
-      localStorage.removeItem('fxv_key');
-      label.classList.remove('visible');
-    }
-    checkReady();
-  }
+  var imageBase64 = null;
+  var selectedTf = 'H1';
 
   // Timeframe buttons
   document.querySelectorAll('.tf-btn').forEach(function(btn) {
@@ -814,7 +678,6 @@ body {
 
   // Upload
   var dropArea = document.getElementById('drop-area');
-  var fileInput = document.getElementById('file-input');
 
   dropArea.addEventListener('dragover', function(e) {
     e.preventDefault();
@@ -831,7 +694,7 @@ body {
     if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
   });
 
-  fileInput.addEventListener('change', function(e) {
+  document.getElementById('file-input').addEventListener('change', function(e) {
     if (e.target.files[0]) handleFile(e.target.files[0]);
   });
 
@@ -843,122 +706,109 @@ body {
       document.getElementById('preview-img').src = e.target.result;
       document.getElementById('preview-name').textContent = file.name;
       document.getElementById('drop-prompt').style.display = 'none';
-      var pw = document.getElementById('preview-wrap');
-      pw.style.display = 'block';
+      document.getElementById('preview-wrap').style.display = 'block';
       dropArea.style.padding = '0';
       dropArea.style.border = 'none';
-      checkReady();
+      document.getElementById('btn-analyze').disabled = false;
     };
     reader.readAsDataURL(file);
   }
 
-  function checkReady() {
-    var k = document.getElementById('api-input').value.trim();
-    document.getElementById('btn-analyze').disabled = !(imageBase64 && k.length > 10);
-  }
-
-  // Analysis
+  // Analysis with Puter.js (free, no API key needed)
   async function runAnalysis() {
-    var apiKey = document.getElementById('api-input').value.trim();
-    if (!apiKey || !imageBase64) return;
+    if (!imageBase64) return;
+
+    // Verifier que Puter.js est bien charge
+    if (typeof puter === 'undefined') {
+      showError('Puter.js ne charge pas. Verifie ta connexion internet et recharge la page.');
+      return;
+    }
 
     document.getElementById('loading').classList.add('show');
     document.getElementById('btn-analyze').disabled = true;
 
-    var prompt = "Tu es un analyste technique Forex et matieres premieres de niveau institutionnel. Analyse ce graphique de trading avec une precision maximale.\n\nINSTRUCTIONS :\n1. Identifie AUTOMATIQUEMENT la paire tradee (EUR/USD, GBP/USD, XAU/USD, USD/JPY, NAS100, SP500, BTC/USD, etc.) en lisant les labels visibles sur le graphique\n2. Analyse complete : structure de marche (Higher Highs/Higher Lows), zones de support et resistance, patterns de chandeliers (pin bar, engulfing, doji), indicateurs visibles (EMA, RSI, MACD, Bollinger), niveaux psychologiques\n3. Donne des niveaux de prix EXACTS en lisant les valeurs sur le graphique\n4. Timeframe analyse : " + selectedTf + "\n\nReponds UNIQUEMENT avec ce JSON valide, sans aucun texte avant ou apres :\n{\"pair\":\"XAU/USD\",\"signal\":\"BUY\",\"confidence\":78,\"entry\":\"2342.50\",\"entry_note\":\"Rebond support H1\",\"tp\":\"2368.00\",\"tp_note\":\"Resistance majeure R/R 1:2\",\"sl\":\"2330.00\",\"sl_note\":\"Sous le dernier bas\",\"rr_ratio\":\"1:2.1\",\"trend\":\"Haussier\",\"momentum\":\"Fort\",\"setup\":\"Pullback EMA50\",\"structure\":\"HH/HL confirme\",\"analysis\":\"Analyse detaillee : decris la structure de marche, le pattern identifie, les confluences techniques et la logique du signal. Mentionne les indicateurs visibles et les niveaux cles.\",\"advices\":[{\"icon\":\"checkmark\",\"text\":\"Conseil precis base sur ce graphique\"},{\"icon\":\"warning\",\"text\":\"Risque specifique a ce setup\"},{\"icon\":\"chart\",\"text\":\"Confirmation a attendre avant d'entrer\"},{\"icon\":\"idea\",\"text\":\"Conseil gestion du trade\"}]}";
+    var prompt = 'Tu es un analyste technique Forex et matieres premieres de niveau institutionnel. Analyse ce graphique de trading avec une precision maximale.\n\nINSTRUCTIONS :\n1. Identifie AUTOMATIQUEMENT la paire tradee (EUR/USD, GBP/USD, XAU/USD, USD/JPY, NAS100, SP500, BTC/USD, etc.) en lisant les labels visibles sur le graphique\n2. Analyse complete : structure de marche (Higher Highs/Higher Lows), zones de support et resistance, patterns de chandeliers, indicateurs visibles (EMA, RSI, MACD, Bollinger), niveaux psychologiques\n3. Donne des niveaux de prix EXACTS en lisant les valeurs sur le graphique\n4. Timeframe analyse : ' + selectedTf + '\n\nReponds UNIQUEMENT avec ce JSON valide, sans aucun texte avant ou apres :\n{"pair":"XAU/USD","signal":"BUY","confidence":78,"entry":"2342.50","entry_note":"Rebond support H1","tp":"2368.00","tp_note":"Resistance majeure","sl":"2330.00","sl_note":"Sous le dernier bas","rr_ratio":"1:2.1","trend":"Haussier","momentum":"Fort","setup":"Pullback EMA50","structure":"HH/HL confirme","analysis":"Analyse detaillee de 3-4 phrases sur la structure, les patterns, les confluences et la logique du signal.","advices":[{"icon":"ok","text":"Conseil precis"},{"icon":"warn","text":"Risque a surveiller"},{"icon":"chart","text":"Confirmation a attendre"},{"icon":"idea","text":"Gestion du trade"}]}';
 
     try {
-      var response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + apiKey
-        },
-        body: JSON.stringify({
-          model: "meta-llama/llama-4-scout-17b-16e-instruct",
-          max_tokens: 1200,
-          temperature: 0.1,
-          messages: [{
-            role: "user",
+      // Puter.js - free unlimited AI, no API key needed
+      var response = await puter.ai.chat(
+        [
+          {
+            role: 'user',
             content: [
-              { type: "image_url", image_url: { url: "data:image/jpeg;base64," + imageBase64 } },
-              { type: "text", text: prompt }
+              {
+                type: 'image_url',
+                image_url: { url: 'data:image/jpeg;base64,' + imageBase64 }
+              },
+              {
+                type: 'text',
+                text: prompt
+              }
             ]
-          }]
-        })
-      });
+          }
+        ],
+        { model: 'gpt-4o' }
+      );
 
-      var data = await response.json();
-      if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-
-      var text = data.choices[0].message.content.trim();
+      var text = (typeof response === 'string' ? response : response?.message?.content || response?.content || JSON.stringify(response)).trim();
       text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
       var match = text.match(/\{[\s\S]*\}/);
-      if (!match) throw new Error("Reponse IA invalide");
+      if (!match) throw new Error('Reponse IA invalide');
 
       var r = JSON.parse(match[0]);
       showResult(r);
 
     } catch(err) {
-      showError(err.message);
+      showError(err.message || String(err));
     } finally {
       document.getElementById('loading').classList.remove('show');
       document.getElementById('btn-analyze').disabled = false;
     }
   }
 
-  var iconMap = {
-    'checkmark': '&#10003;',
-    'warning': '&#9888;',
-    'chart': '&#128200;',
-    'idea': '&#128161;'
-  };
+  var iconMap = { ok: '&#10003;', warn: '&#9888;', chart: '&#128200;', idea: '&#128161;' };
 
   function showResult(r) {
     document.getElementById('empty-state').style.display = 'none';
     document.getElementById('result-content').style.display = 'block';
 
-    // Signal
     var badge = document.getElementById('signal-badge');
     badge.textContent = r.signal || '--';
     badge.className = 'signal-badge ' + (r.signal === 'BUY' ? 'buy' : r.signal === 'SELL' ? 'sell' : 'wait');
 
-    // Pair & confidence
     document.getElementById('pair-name').textContent = (r.pair || '--') + ' - ' + selectedTf;
     document.getElementById('conf-value').textContent = (r.confidence || '--') + '%';
 
-    // Levels
     document.getElementById('entry-val').textContent = r.entry || '--';
     document.getElementById('tp-val').textContent = r.tp || '--';
     document.getElementById('sl-val').textContent = r.sl || '--';
     if (r.entry_note) document.getElementById('entry-note').textContent = r.entry_note;
-    if (r.tp_note) document.getElementById('tp-note').textContent = r.tp_note;
-    if (r.sl_note) document.getElementById('sl-note').textContent = r.sl_note;
+    if (r.tp_note)    document.getElementById('tp-note').textContent = r.tp_note;
+    if (r.sl_note)    document.getElementById('sl-note').textContent = r.sl_note;
 
-    // Analysis
     document.getElementById('analysis-text').textContent = r.analysis || '';
 
-    // Stats
-    document.getElementById('s-pair').textContent = r.pair || '--';
-    document.getElementById('s-rr').textContent = r.rr_ratio || '--';
-    document.getElementById('s-trend').textContent = r.trend || '--';
-    document.getElementById('s-momentum').textContent = r.momentum || '--';
-    document.getElementById('s-setup').textContent = r.setup || '--';
+    document.getElementById('s-pair').textContent      = r.pair      || '--';
+    document.getElementById('s-rr').textContent        = r.rr_ratio  || '--';
+    document.getElementById('s-trend').textContent     = r.trend     || '--';
+    document.getElementById('s-momentum').textContent  = r.momentum  || '--';
+    document.getElementById('s-setup').textContent     = r.setup     || '--';
     document.getElementById('s-structure').textContent = r.structure || '--';
 
-    // Advice
     if (r.advices && r.advices.length) {
-      var icons = ['&#10003;', '&#9888;', '&#128200;', '&#128161;'];
+      var fallback = ['&#10003;', '&#9888;', '&#128200;', '&#128161;'];
       document.getElementById('advice-list').innerHTML = r.advices.map(function(a, i) {
-        var icon = iconMap[a.icon] || icons[i] || '&#9679;';
-        return '<div class="advice-item"><span class="advice-icon">' + icon + '</span><span class="advice-text">' + a.text + '</span></div>';
+        var ic = iconMap[a.icon] || fallback[i] || '&#9679;';
+        return '<div class="advice-item"><span class="advice-icon">' + ic + '</span><span class="advice-text">' + a.text + '</span></div>';
       }).join('');
     }
   }
 
   function showError(msg) {
     document.getElementById('empty-state').style.display = 'flex';
-    document.getElementById('empty-state').innerHTML = '<div class="empty-icon" style="color:#ff5577">&#9888;</div><div class="empty-text" style="color:#ff5577;font-size:10px;">' + msg + '</div>';
+    document.getElementById('empty-state').innerHTML =
+      '<div class="empty-icon" style="color:#ff5577">&#9888;</div>' +
+      '<div class="empty-text" style="color:#ff5577;font-size:10px;">' + msg + '</div>';
     document.getElementById('result-content').style.display = 'none';
   }
 
